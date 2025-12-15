@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wyng Terminal | Building in Public</title>
+    <meta name="description" content="Watch Wyng build the Healthcare Guardian Angel in real-time. Investor updates, milestones, and founder learnings.">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Wyng Terminal | Building in Public">
+    <meta property="og:description" content="Watch us build the Healthcare Guardian Angel in real-time.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://getwyng.co">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🪽</text></svg>">
+</head>
+<body>
+    <!-- Scanline overlay for CRT effect -->
+    <div class="scanlines"></div>
+    
+    <!-- Main terminal container -->
+    <div class="terminal">
+        <!-- Terminal header bar -->
+        <div class="terminal-header">
+            <div class="terminal-buttons">
+                <span class="btn-close"></span>
+                <span class="btn-minimize"></span>
+                <span class="btn-maximize"></span>
+            </div>
+            <div class="terminal-title">wyng@terminal: ~/building-in-public</div>
+            <div class="terminal-status">
+                <span class="status-dot"></span>
+                <span>LIVE</span>
+            </div>
+        </div>
+        
+        <!-- Terminal content -->
+        <div class="terminal-body">
+            <!-- Welcome section -->
+            <div id="welcome" class="section active">
+                <div class="ascii-logo">
+<pre>
+██╗    ██╗██╗   ██╗███╗   ██╗ ██████╗ 
+██║    ██║╚██╗ ██╔╝████╗  ██║██╔════╝ 
+██║ █╗ ██║ ╚████╔╝ ██╔██╗ ██║██║  ███╗
+██║███╗██║  ╚██╔╝  ██║╚██╗██║██║   ██║
+╚███╔███╔╝   ██║   ██║ ╚████║╚██████╔╝
+ ╚══╝╚══╝    ╚═╝   ╚═╝  ╚═══╝ ╚═════╝ 
+</pre>
+                </div>
+                <p class="tagline typing-effect">Your Healthcare Guardian Angel</p>
+                <p class="version">v0.1.0 | Building in public since 2024</p>
+                
+                <div class="command-prompt">
+                    <span class="prompt">$</span>
+                    <span class="command">whoami</span>
+                </div>
+                <div class="output">
+                    <p><span class="highlight">Eric Chiyembekeza</span> | Founder & CEO</p>
+                    <p class="dim">10+ yrs healthcare ops | 3 acquisitions | 900K+ lives managed</p>
+                    <p class="dim">Built the 18-rule AI audit engine myself</p>
+                </div>
+                
+                <div class="command-prompt">
+                    <span class="prompt">$</span>
+                    <span class="command">cat MISSION.txt</span>
+                </div>
+                <div class="output mission-box">
+                    <p>A <span class="highlight-yellow">$505B</span> out-of-pocket healthcare crisis.</p>
+                    <p><span class="highlight-red">$125B</span> of it shouldn't exist.</p>
+                    <p class="dim">We're fixing it—one bill at a time.</p>
+                </div>
+                
+                <div class="command-prompt">
+                    <span class="prompt">$</span>
+                    <span class="command">ls</span>
+                </div>
+                <div class="output file-list">
+                    <span class="nav-item" data-section="pitch">📄 PITCH.pdf</span>
+                    <span class="nav-item" data-section="metrics">📊 METRICS.md</span>
+                    <span class="nav-item" data-section="updates">📁 UPDATES/</span>
+                    <span class="nav-item" data-section="milestones">🚀 MILESTONES.log</span>
+                    <span class="nav-item" data-section="roadmap">🗺️ ROADMAP.md</span>
+                    <span class="nav-item" data-section="learnings">💡 LEARNINGS/</span>
+                    <span class="nav-item" data-section="contact">📬 CONTACT.md</span>
+                </div>
+                
+                <div class="command-input">
+                    <span class="prompt">$</span>
+                    <span class="cursor-text">Click a file to navigate or type below...</span>
+                    <span class="cursor">▊</span>
+                </div>
+            </div>
+            
+            <!-- Pitch section -->
+            <div id="pitch" class="section">
+                <div class="section-header">
+                    <span class="back-btn" data-section="welcome">← back</span>
+                    <span class="file-path">~/PITCH.pdf</span>
+                </div>
+                <div class="command-prompt">
+                    <span class="prompt">$</span>
+                    <span class="command">open PITCH.pdf</span>
+                </div>
+                <div class="output">
+                    <div class="pitch-summary">
+                        <h3>⚡ The 60-Second Pitch</h3>
+                        <p><span class="highlight">Problem:</span> 80%+ of hospital bills contain errors. Less than 1% are disputed. Patients have no tools to fight back.</p>
+                        <p><span class="highlight">Solution:</span> Wyng is an AI-powered platform that helps families <span class="highlight-green">predict</span> costs before care, <span class="highlight-yellow">pinpoint</span> billing errors after care, and <span class="highlight-cyan">protect</span> against uncovered balances.</p>
+                        <p><span class="highlight">Differentiation:</span> We empower patients with regulatory citations for self-appeals. Competitors charge 15-35% to fight for you. We charge $9.99-$94.99/mo to arm you.</p>
+                        <p><span class="highlight">Traction:</span> 3 signed LOIs, 30K+ lives in pipeline, Q1 2026 pilots launching.</p>
+                        <p><span class="highlight">Ask:</span> $250K-$1M Friends & Family round via SAFE.</p>
+                    </div>
+                    <div class="download-box">
+                        <a href="https://docsend.com/view/your-deck-link" target="_blank" class="download-btn">📥 Download Full Pitch Deck</a>
+                        <p class="dim">Or request access: eric@quothealth.com</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Metrics section -->
+            <div id="metrics" class="section">
+                <div class="section-header">
+                    <span class="back-btn" data-section="welcome">← back</span>
+                    <span class="file-path">~/METRICS.md</span>
+                </div>
+                <div class="command-prompt">
+                    <span class="prompt">$</span>
+                    <span class="command">cat METRICS.md</span>
+                </div>
+                <div class="output markdown-content" id="metrics-content">
+                    <!-- Loaded from content/metrics.md -->
+                    <p class="loading">Loading metrics...</p>
+                </div>
+            </div>
+            
+            <!-- Updates section -->
+            <div id="updates" class="section">
+                <div class="section-header">
+                    <span class="back-btn" data-section="welcome">← back</span>
+                    <span class="file-path">~/UPDATES/</span>
+                </div>
+                <div class="command-prompt">
+                    <span class="prompt">$</span>
+                    <span class="command">ls -la UPDATES/</span>
+                </div>
+                <div class="output" id="updates-list">
+                    <!-- Populated by JavaScript -->
+                    <p class="loading">Loading updates...</p>
+                </div>
+                <div class="update-content" id="update-detail" style="display: none;">
+                    <!-- Single update view -->
+                </div>
+            </div>
+            
+            <!-- Milestones section -->
+            <div id="milestones" class="section">
+                <div class="section-header">
+                    <span class="back-btn" data-section="welcome">← back</span>
+                    <span class="file-path">~/MILESTONES.log</span>
+                </div>
+                <div class="command-prompt">
+                    <span class="prompt">$</span>
+                    <span class="command">git log --oneline --reverse</span>
+                </div>
+                <div class="output markdown-content" id="milestones-content">
+                    <!-- Loaded from content/milestones.md -->
+                    <p class="loading">Loading milestones...</p>
+                </div>
+            </div>
+            
+            <!-- Roadmap section -->
+            <div id="roadmap" class="section">
+                <div class="section-header">
+                    <span class="back-btn" data-section="welcome">← back</span>
+                    <span class="file-path">~/ROADMAP.md</span>
+                </div>
+                <div class="command-prompt">
+                    <span class="prompt">$</span>
+                    <span class="command">cat ROADMAP.md</span>
+                </div>
+                <div class="output markdown-content" id="roadmap-content">
+                    <!-- Loaded from content/roadmap.md -->
+                    <p class="loading">Loading roadmap...</p>
+                </div>
+            </div>
+            
+            <!-- Learnings section -->
+            <div id="learnings" class="section">
+                <div class="section-header">
+                    <span class="back-btn" data-section="welcome">← back</span>
+                    <span class="file-path">~/LEARNINGS/</span>
+                </div>
+                <div class="command-prompt">
+                    <span class="prompt">$</span>
+                    <span class="command">cat LEARNINGS/*.md</span>
+                </div>
+                <div class="output markdown-content" id="learnings-content">
+                    <!-- Loaded from content/learnings.md -->
+                    <p class="loading">Loading learnings...</p>
+                </div>
+            </div>
+            
+            <!-- Contact section -->
+            <div id="contact" class="section">
+                <div class="section-header">
+                    <span class="back-btn" data-section="welcome">← back</span>
+                    <span class="file-path">~/CONTACT.md</span>
+                </div>
+                <div class="command-prompt">
+                    <span class="prompt">$</span>
+                    <span class="command">cat CONTACT.md</span>
+                </div>
+                <div class="output">
+                    <div class="contact-box">
+                        <h3>📬 Get in Touch</h3>
+                        <div class="contact-item">
+                            <span class="label">Email:</span>
+                            <a href="mailto:eric@quothealth.com">eric@quothealth.com</a>
+                        </div>
+                        <div class="contact-item">
+                            <span class="label">LinkedIn:</span>
+                            <a href="https://linkedin.com/in/ericchiyembekeza" target="_blank">linkedin.com/in/ericchiyembekeza</a>
+                        </div>
+                        <div class="contact-item">
+                            <span class="label">Main Site:</span>
+                            <a href="https://mywyng.co" target="_blank">mywyng.co</a>
+                        </div>
+                        <div class="contact-item">
+                            <span class="label">Calendar:</span>
+                            <a href="https://calendly.com/eric-wyng" target="_blank">Book a call</a>
+                        </div>
+                        <div class="response-time">
+                            <p>🕐 <span class="highlight-green">For investors:</span> I respond within 24 hours.</p>
+                            <p>🤝 <span class="highlight-cyan">For founders:</span> Happy to chat. DM me on LinkedIn.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Terminal footer -->
+        <div class="terminal-footer">
+            <span class="footer-left">Last updated: <span id="last-updated">December 2024</span></span>
+            <span class="footer-right">Made with ☕ and 💚 | <a href="https://mywyng.co" target="_blank">mywyng.co</a></span>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
