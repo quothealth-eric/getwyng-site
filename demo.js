@@ -563,148 +563,31 @@ class WyngAuditDemo {
 
         } catch (error) {
             console.error('Analysis error:', error);
-            this.setState({ step: 4, results: this.getMockResults(), processing: false });
+            // Show error instead of mock data
+            this.setState({
+                step: 4,
+                results: {
+                    caseId: 'error-' + Date.now(),
+                    summary: {
+                        highLevelFindings: ['Document processing failed - please check your OpenAI API key and try again'],
+                        potentialSavings_cents: 0,
+                        basis: 'error'
+                    },
+                    lineAudit: [],
+                    detections: [],
+                    checklist: ['Verify OpenAI API key is configured in Vercel environment', 'Check file formats are supported (PDF, PNG, JPG)', 'Try uploading different documents'],
+                    appealLetter: `Error: Could not process documents. Please check:\n1. OpenAI API key is configured\n2. Files are valid PDFs or images\n3. Try again with different files\n\nError details: ${error.message}`,
+                    scripts: {
+                        provider: 'Error processing documents - please try again',
+                        payer: 'Error processing documents - please try again'
+                    },
+                    citations: []
+                },
+                processing: false
+            });
         }
     }
 
-    getMockResults() {
-        return {
-            caseId: 'demo-' + Date.now(),
-            summary: {
-                highLevelFindings: [
-                    '3 potential billing issues detected',
-                    'Packaged services billed separately',
-                    'Duplicate charge identified'
-                ],
-                potentialSavings_cents: 84700,
-                basis: 'allowed'
-            },
-            lineAudit: [
-                { lineId: '1', code: '99213', description: 'Office Visit, Est Patient', charge_cents: 25000, allowed_cents: 12500, patient_resp_cents_bill: 2500, rulesTriggered: [] },
-                { lineId: '2', code: '36415', description: 'Venipuncture', charge_cents: 4500, allowed_cents: 4500, patient_resp_cents_bill: 4500, rulesTriggered: ['R01'] },
-                { lineId: '3', code: '82962', description: 'Glucose Test', charge_cents: 1800, allowed_cents: 1200, patient_resp_cents_bill: 1200, rulesTriggered: ['R04'] },
-                { lineId: '4', code: '82962', description: 'Glucose Test', charge_cents: 1800, allowed_cents: 1200, patient_resp_cents_bill: 1200, rulesTriggered: ['R04'] },
-                { lineId: '5', code: '96372', description: 'Therapeutic Injection', charge_cents: 76600, allowed_cents: 18000, patient_resp_cents_bill: 3600, rulesTriggered: ['R17'] }
-            ],
-            detections: [
-                {
-                    ruleKey: 'R01: Packaged Venipuncture',
-                    severity: 'high',
-                    explanation: 'Facility venipuncture (CPT 36415) is commonly packaged with lab services and not separately payable. This charge should be removed from your patient responsibility.',
-                    actions: [
-                        'Call payer and request reprocessing: venipuncture packaged with labs per facility rules',
-                        'Request corrected patient statement from provider'
-                    ],
-                    savings_cents: 4500,
-                    evidence: { lineIds: ['2'] },
-                    citations: [{ authority: 'CMS', title: 'OPPS Packaging — Lab Draws', section: 'Chapter 4' }]
-                },
-                {
-                    ruleKey: 'R04: Duplicate Charge',
-                    severity: 'high',
-                    explanation: 'CPT 82962 (glucose test) billed 2x on same date of service. Unless medical records document necessity for repeat testing, one should be removed.',
-                    actions: [
-                        'Request MAR/nursing logs showing documented repeat testing necessity',
-                        'If not documented, dispute as duplicate charge'
-                    ],
-                    savings_cents: 1200,
-                    evidence: { lineIds: ['3', '4'] },
-                    citations: [{ authority: 'CMS', title: 'NCCI Manual — Frequency & Duplicates', section: 'Ch 1, Sec E' }]
-                },
-                {
-                    ruleKey: 'R17: Price Outlier',
-                    severity: 'warn',
-                    explanation: 'Therapeutic injection charged at $766 vs typical negotiated rate of $125-180 in your area. While the allowed amount ($180) is reasonable, the charge suggests potential billing code error.',
-                    actions: [
-                        'Request itemized breakdown with NDC and dosage',
-                        'Verify correct CPT code was used',
-                        'Request contract rate verification from payer'
-                    ],
-                    savings_cents: 0,
-                    evidence: { lineIds: ['5'] },
-                    citations: [{ authority: 'Transparency', title: 'Transparency in Coverage Data' }]
-                }
-            ],
-            checklist: [
-                'Request itemized bill with CPT/HCPCS codes (if not already received)',
-                'Request MAR/nursing logs for duplicate glucose tests',
-                'Call payer to dispute packaged venipuncture charge',
-                'Request corrected patient statement from provider billing dept'
-            ],
-            appealLetter: `[Your Name]
-[Your Address]
-[City, State ZIP]
-[Date]
-
-[Insurance Company Name]
-[Claims Department Address]
-[City, State ZIP]
-
-RE: Appeal of Claim Processing
-Member ID: [Your Member ID]
-Claim Number: [Claim Number]
-Date of Service: [DOS]
-Provider: [Provider Name]
-
-Dear Claims Review Department,
-
-I am writing to formally appeal the processing of the above-referenced claim. Upon review of my Explanation of Benefits and itemized bill, I have identified the following issues that require correction:
-
-1. PACKAGED VENIPUNCTURE (CPT 36415)
-Per CMS OPPS packaging rules and your facility payment policies, venipuncture (CPT 36415) is packaged with laboratory services when performed at a facility and is not separately payable. This charge of $45.00 should be removed from my patient responsibility.
-
-2. DUPLICATE CHARGE (CPT 82962)
-The glucose test (CPT 82962) was billed twice on the same date of service. Without documented medical necessity for repeat testing in the medical record, this constitutes a duplicate charge. I request removal of the second charge ($12.00) from my patient responsibility.
-
-I request that you:
-1. Reprocess this claim with the above corrections
-2. Issue a corrected EOB reflecting accurate patient responsibility
-3. Coordinate with the provider to issue a corrected patient statement
-
-Please respond within 30 days as required by [State] insurance regulations.
-
-Sincerely,
-[Your Name]
-
-Attachments:
-- Copy of itemized bill
-- Copy of EOB
-- This appeal letter`,
-            scripts: {
-                provider: `PROVIDER BILLING DEPARTMENT SCRIPT
-
-"Hi, I'm calling about my account for date of service [DOS]. I've reviewed my itemized bill and EOB and found some discrepancies I'd like to discuss.
-
-First, I see a charge for venipuncture, CPT 36415, for $45. Since I also had lab work done the same day, this should be packaged under facility billing rules and not billed separately to me.
-
-Second, I see the glucose test, CPT 82962, was billed twice. Can you verify if there's documentation supporting two separate tests?
-
-I'd like to request:
-1. A review of the venipuncture charge for packaging
-2. Documentation supporting the duplicate glucose test, or removal of the duplicate
-3. A corrected statement once these are resolved
-
-Can you provide a reference number for this inquiry?"`,
-                payer: `INSURANCE COMPANY SCRIPT
-
-"Hi, I'm calling about claim number [claim number] for date of service [DOS].
-
-I've reviewed my EOB and have questions about the processing:
-
-1. I see venipuncture, CPT 36415, was allowed at $45 and applied to my responsibility. Per OPPS packaging rules, shouldn't this be packaged with the lab services and not separately payable?
-
-2. I also see two separate glucose tests, CPT 82962, on the same day. Was medical necessity documentation received for both tests?
-
-I'd like to request:
-1. A review of the venipuncture for correct packaging
-2. Review of the duplicate glucose charges
-3. Reprocessing of the claim if corrections are needed
-
-Can I get a reference number and expected timeline for this review?"`
-            },
-            citations: []
-        };
-    }
 
     async downloadPdf() {
         const btn = document.getElementById('download-pdf-btn');

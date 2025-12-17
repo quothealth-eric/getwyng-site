@@ -286,23 +286,51 @@ Return ONLY valid JSON in this format:
         })
     });
 
+    if (!response.ok) {
+        throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
+    }
+
     const data = await response.json();
-    const content = data.choices?.[0]?.message?.content || '{}';
+    console.log('OpenAI API response received:', data);
+
+    if (data.error) {
+        throw new Error(`OpenAI API error: ${data.error.message}`);
+    }
+
+    const content = data.choices?.[0]?.message?.content || '';
+    console.log(`GPT-4o response content length: ${content.length}`);
+
+    if (!content) {
+        throw new Error('Empty response from GPT-4o');
+    }
 
     try {
-        // Extract JSON from the response
+        // Extract JSON from the response with better error handling
         const jsonMatch = content.match(/```json\n?([\s\S]*?)\n?```/) ||
                          content.match(/```\n?([\s\S]*?)\n?```/) ||
                          content.match(/\{[\s\S]*\}/);
 
-        const jsonStr = jsonMatch ? (jsonMatch[1] || jsonMatch[0]) : content;
+        if (!jsonMatch) {
+            console.error('No JSON found in GPT response:', content);
+            throw new Error('GPT-4o did not return valid JSON format');
+        }
+
+        const jsonStr = jsonMatch[1] || jsonMatch[0];
+        console.log(`Attempting to parse JSON: ${jsonStr.substring(0, 200)}...`);
+
         const parsed = JSON.parse(jsonStr);
 
-        console.log(`GPT-4o extracted ${parsed.lines?.length || 0} lines from ${docType}`);
+        if (!parsed.lines || !Array.isArray(parsed.lines)) {
+            console.error('GPT response missing lines array:', parsed);
+            throw new Error('GPT-4o response missing required lines array');
+        }
+
+        console.log(`GPT-4o successfully extracted ${parsed.lines.length} lines from ${docType}`);
         return parsed;
     } catch (error) {
         console.error('Failed to parse GPT response:', error);
-        return { document_type: docType, lines: [] };
+        console.error('Raw GPT response:', content);
+        throw new Error(`Document parsing failed: ${error.message}`);
     }
 }
 
