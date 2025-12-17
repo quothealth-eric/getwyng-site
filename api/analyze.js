@@ -12,6 +12,10 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
+    console.log('=== AUDIT API DEBUG START ===');
+    console.log('API Key present:', !!process.env.OPENAI_API_KEY);
+    console.log('API Key prefix:', process.env.OPENAI_API_KEY?.substring(0, 10) + '...');
+
     try {
         const { IncomingForm } = await import('formidable');
 
@@ -31,8 +35,21 @@ export default async function handler(req, res) {
         const eobFile = files.eob?.[0];
         const insuranceInfo = JSON.parse(fields.insuranceInfo?.[0] || '{}');
 
+        console.log('Files received:', {
+            bill: billFile ? `${billFile.originalFilename} (${billFile.mimetype}, ${billFile.size} bytes)` : 'missing',
+            eob: eobFile ? `${eobFile.originalFilename} (${eobFile.mimetype}, ${eobFile.size} bytes)` : 'missing'
+        });
+
         if (!billFile || !eobFile) {
             return res.status(400).json({ error: 'Both bill and EOB files are required' });
+        }
+
+        if (!process.env.OPENAI_API_KEY) {
+            console.error('OpenAI API key is missing!');
+            return res.status(500).json({
+                error: 'OpenAI API key not configured',
+                details: 'Please configure OPENAI_API_KEY in Vercel environment variables'
+            });
         }
 
         console.log(`Processing files: ${billFile.originalFilename} (${billFile.mimetype}) and ${eobFile.originalFilename} (${eobFile.mimetype})`);
@@ -40,47 +57,88 @@ export default async function handler(req, res) {
         // Run advanced audit pipeline
         const results = await runAdvancedAuditPipeline({ billFile, eobFile, insuranceInfo });
 
+        console.log('=== FINAL RESULTS DEBUG ===');
+        console.log('Results structure:', {
+            caseId: results.caseId,
+            summaryFindings: results.summary?.highLevelFindings?.length || 0,
+            lineAuditCount: results.lineAudit?.length || 0,
+            detectionsCount: results.detections?.length || 0,
+            hasSavings: results.summary?.potentialSavings_cents > 0
+        });
+        console.log('=== AUDIT API DEBUG END ===');
+
         return res.status(200).json(results);
 
     } catch (error) {
-        console.error('Audit error:', error);
+        console.error('=== AUDIT ERROR ===');
+        console.error('Error message:', error.message);
+        console.error('Error stack:', error.stack);
         return res.status(500).json({ error: 'Analysis failed', details: error.message });
     }
 }
 
 async function runAdvancedAuditPipeline({ billFile, eobFile, insuranceInfo }) {
-    console.log('Starting advanced audit pipeline...');
+    console.log('=== STARTING AUDIT PIPELINE ===');
 
     try {
         // Step 1: Advanced OCR extraction
+        console.log('Step 1: Starting OCR extraction...');
         const billData = await performAdvancedOCR(billFile, 'bill');
         const eobData = await performAdvancedOCR(eobFile, 'eob');
 
-        console.log('OCR completed, extracted data structures');
+        console.log('Step 1 Complete: OCR data extracted', {
+            billDataLength: billData?.document_info ? 'parsed' : 'empty',
+            eobDataLength: eobData?.document_info ? 'parsed' : 'empty'
+        });
 
         // Step 2: Enhanced AI parsing and line extraction
+        console.log('Step 2: Starting line parsing...');
         const billLines = await enhancedLineParsing(billData, 'bill', insuranceInfo);
         const eobLines = await enhancedLineParsing(eobData, 'eob', insuranceInfo);
 
-        console.log(`Parsed ${billLines.length} bill lines and ${eobLines.length} EOB lines`);
+        console.log(`Step 2 Complete: Parsed ${billLines.length} bill lines and ${eobLines.length} EOB lines`);
+        console.log('Sample bill lines:', billLines.slice(0, 2));
+        console.log('Sample EOB lines:', eobLines.slice(0, 2));
+
+        // CRITICAL CHECK: Verify we have real data, not empty/mock data
+        if (billLines.length === 0 && eobLines.length === 0) {
+            throw new Error('Document processing failed - no lines extracted from uploaded documents. Please check file format and OpenAI API configuration.');
+        }
+
+        if (billLines.length === 5 &&
+            billLines.some(l => l.code === '99213') &&
+            billLines.some(l => l.code === '36415') &&
+            billLines.some(l => l.code === '82962') &&
+            billLines.some(l => l.code === '96372')) {
+            throw new Error('DETECTED MOCK DATA: The system returned test data instead of processing your documents. Please check your OpenAI API key configuration.');
+        }
 
         // Step 3: Intelligent line matching
+        console.log('Step 3: Starting line matching...');
         const matches = await intelligentLineMatching(billLines, eobLines);
+        console.log(`Step 3 Complete: Found ${matches.length} line matches`);
 
         // Step 4: Advanced 18-rule audit engine
+        console.log('Step 4: Running 18-rule audit engine...');
         const detections = await runAdvancedRuleEngine({ billLines, eobLines, matches, insuranceInfo });
+        console.log(`Step 4 Complete: ${detections.length} rule violations detected`);
+        console.log('Detections summary:', detections.map(d => ({ rule: d.ruleKey, severity: d.severity })));
 
         // Step 5: Calculate savings with insurance context
         const savings = detections.reduce((sum, d) => sum + (d.savings_cents || 0), 0);
+        console.log(`Step 5 Complete: Total savings ${savings} cents`);
 
         // Step 6: Generate comprehensive results with AI assistance
+        console.log('Step 6: Generating final results...');
         const results = await generateEnhancedResults({ billLines, eobLines, matches, detections, savings, insuranceInfo });
 
-        console.log('Audit pipeline completed successfully');
+        console.log('=== AUDIT PIPELINE COMPLETED ===');
         return results;
 
     } catch (error) {
-        console.error('Pipeline error:', error);
+        console.error('=== PIPELINE ERROR ===');
+        console.error('Error in pipeline:', error.message);
+        console.error('Error stack:', error.stack);
         throw error;
     }
 }
