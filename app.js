@@ -217,12 +217,27 @@ function formatDate(dateString) {
  */
 function setupKeyboardShortcuts() {
     document.addEventListener('keydown', (e) => {
-        // Escape to go back to welcome
+        // Skip keyboard shortcuts if user is typing in an input/textarea/select
+        const activeElement = document.activeElement;
+        const isInputFocused = activeElement && (
+            activeElement.tagName === 'INPUT' ||
+            activeElement.tagName === 'TEXTAREA' ||
+            activeElement.tagName === 'SELECT' ||
+            activeElement.contentEditable === 'true'
+        );
+
+        // Escape to go back to welcome (always works)
         if (e.key === 'Escape') {
             navigateTo('welcome');
+            return;
         }
-        
-        // Number keys for quick navigation
+
+        // Skip other shortcuts if typing in form fields
+        if (isInputFocused) {
+            return;
+        }
+
+        // Number keys for quick navigation (only when not in input fields)
         const shortcuts = {
             '1': 'pitch',
             '2': 'metrics',
@@ -230,9 +245,10 @@ function setupKeyboardShortcuts() {
             '4': 'milestones',
             '5': 'roadmap',
             '6': 'learnings',
-            '7': 'contact'
+            '7': 'contact',
+            '8': 'demo'  // Added demo shortcut
         };
-        
+
         if (shortcuts[e.key] && !e.ctrlKey && !e.metaKey) {
             navigateTo(shortcuts[e.key]);
         }

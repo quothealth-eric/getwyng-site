@@ -11,6 +11,10 @@ Thumbs.db
 # Local development
 node_modules/
 .vercel/
+.env.local
+.env
 
 # Logs
 *.log
+.vercel
+.env*.local

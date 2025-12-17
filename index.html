@@ -92,6 +92,7 @@
                     <span class="nav-item" data-section="roadmap">🗺️ ROADMAP.md</span>
                     <span class="nav-item" data-section="learnings">💡 LEARNINGS/</span>
                     <span class="nav-item" data-section="contact">📬 CONTACT.md</span>
+                    <span class="nav-item" data-section="demo">🔬 DEMO.exe</span>
                 </div>
                 
                 <div class="command-input">
@@ -246,6 +247,29 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Demo section -->
+            <div id="demo" class="section">
+                <div class="section-header">
+                    <span class="back-btn" data-section="welcome">← back</span>
+                    <span class="file-path">~/DEMO.exe</span>
+                </div>
+                <div class="command-prompt">
+                    <span class="prompt">$</span>
+                    <span class="command">./run_audit_demo.sh</span>
+                </div>
+                <div class="output">
+                    <div class="demo-container">
+                        <h3>🔬 Try the Wyng Bill Audit Engine</h3>
+                        <p class="dim">Upload your medical bill and EOB to see our 18-rule AI audit in action.</p>
+                        <p class="highlight-yellow">⚠️ Beta: For demonstration purposes. Do not upload documents with sensitive information you're not comfortable sharing.</p>
+
+                        <div id="demo-app">
+                            <!-- React app mounts here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         
         <!-- Terminal footer -->
@@ -256,5 +280,6 @@
     </div>
     
     <script src="app.js"></script>
+    <script src="demo.js"></script>
 </body>
 </html>
