@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wyng Demo - Healthcare Bill Audit</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="terminal-container">
+        <!-- Terminal header -->
+        <div class="terminal-header">
+            <div class="terminal-controls">
+                <span class="control control-red"></span>
+                <span class="control control-yellow"></span>
+                <span class="control control-green"></span>
+            </div>
+            <div class="terminal-title">wyng@terminal: ~/demo</div>
+        </div>
+
+        <!-- Main content area -->
+        <div class="terminal-body">
+            <!-- Demo section -->
+            <div id="demo" class="section active">
+                <div class="section-header">
+                    <span class="back-btn" onclick="window.location.href='index.html'">← back to site</span>
+                    <span class="file-path">~/DEMO.exe</span>
+                </div>
+                <div class="command-prompt">
+                    <span class="prompt">$</span>
+                    <span class="command">./run_audit_demo.sh</span>
+                </div>
+                <div class="output">
+                    <div class="demo-container">
+                        <h3>🔬 Wyng Bill Audit Engine - Development Version</h3>
+                        <p class="dim">Upload your medical bill and EOB to test GPT-powered document analysis.</p>
+                        <p class="highlight-yellow">⚠️ Development: For testing purposes only. Real document processing in progress.</p>
+
+                        <div id="demo-app">
+                            <!-- React app mounts here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Terminal footer -->
+        <div class="terminal-footer">
+            <span class="footer-left">Demo Version - Testing Environment</span>
+            <span class="footer-right">Wyng Terminal</span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/marked/marked.min.js"></script>
+    <script src="demo.js"></script>
+</body>
+</html>

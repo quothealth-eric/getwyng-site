@@ -118,19 +118,14 @@ async function runAdvancedAuditPipeline({ billFile, eobFile, insuranceInfo }) {
         const matches = await intelligentLineMatching(billLines, eobLines);
         console.log(`Step 3 Complete: Found ${matches.length} line matches`);
 
-        // Step 4: Advanced 18-rule audit engine
-        console.log('Step 4: Running 18-rule audit engine...');
-        const detections = await runAdvancedRuleEngine({ billLines, eobLines, matches, insuranceInfo });
-        console.log(`Step 4 Complete: ${detections.length} rule violations detected`);
-        console.log('Detections summary:', detections.map(d => ({ rule: d.ruleKey, severity: d.severity })));
+        // Step 4: GPT-powered bill analysis (simplified for testing)
+        console.log('Step 4: Running GPT-powered bill analysis...');
+        const analysis = await performGPTBillAnalysis({ billLines, eobLines, insuranceInfo });
+        console.log('Step 4 Complete: GPT analysis completed');
 
-        // Step 5: Calculate savings with insurance context
-        const savings = detections.reduce((sum, d) => sum + (d.savings_cents || 0), 0);
-        console.log(`Step 5 Complete: Total savings ${savings} cents`);
-
-        // Step 6: Generate comprehensive results with AI assistance
-        console.log('Step 6: Generating final results...');
-        const results = await generateEnhancedResults({ billLines, eobLines, matches, detections, savings, insuranceInfo });
+        // Step 5: Generate simplified results
+        console.log('Step 5: Generating simplified results...');
+        const results = await generateSimplifiedResults({ billLines, eobLines, analysis, insuranceInfo });
 
         console.log('=== AUDIT PIPELINE COMPLETED ===');
         return results;
@@ -980,4 +975,170 @@ function levenshteinDistance(str1, str2) {
     }
 
     return matrix[str2.length][str1.length];
+}
+
+// SIMPLIFIED GPT-POWERED BILL ANALYSIS (without 18-rule engine)
+async function performGPTBillAnalysis({ billLines, eobLines, insuranceInfo }) {
+    console.log('Starting GPT-powered bill analysis...');
+
+    const billText = billLines.map(l => `${l.code} - ${l.description}: $${(l.charge_cents / 100).toFixed(2)}`).join('\n');
+    const eobText = eobLines.map(l => `${l.code} - ${l.description}: Charged $${(l.charge_cents / 100).toFixed(2)}, Allowed $${(l.allowed_cents / 100).toFixed(2)}, Patient owes $${((l.patient_resp_cents || 0) / 100).toFixed(2)}`).join('\n');
+
+    const analysisPrompt = `You are a healthcare billing expert analyzing medical bills for potential errors. Please analyze the following bill and EOB data:
+
+MEDICAL BILL CHARGES:
+${billText}
+
+INSURANCE EOB (EXPLANATION OF BENEFITS):
+${eobText}
+
+INSURANCE DETAILS:
+- Plan Type: ${insuranceInfo.planType || 'Not specified'}
+- Deductible: ${insuranceInfo.deductible || 'Not specified'}
+- Network Status: ${insuranceInfo.networkStatus || 'Not specified'}
+
+Please provide a comprehensive analysis looking for:
+1. Billing errors (duplicate charges, incorrect codes, etc.)
+2. Insurance processing issues
+3. Patient responsibility discrepancies
+4. Potential savings opportunities
+
+Return your analysis in this JSON format:
+{
+  "summary": {
+    "totalFindings": number,
+    "potentialSavings": number,
+    "confidenceLevel": "high|medium|low"
+  },
+  "findings": [
+    {
+      "type": "error|discrepancy|opportunity",
+      "severity": "high|medium|low",
+      "description": "Clear explanation of the issue",
+      "affectedLines": ["line codes"],
+      "potentialSaving": number,
+      "recommendation": "Specific action to take"
+    }
+  ],
+  "nextSteps": [
+    "Prioritized list of actions to take"
+  ]
+}
+
+Focus on real, actionable findings. If no significant issues are found, say so honestly.`;
+
+    try {
+        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`
+            },
+            body: JSON.stringify({
+                model: 'gpt-4o',
+                messages: [{
+                    role: 'user',
+                    content: analysisPrompt
+                }],
+                temperature: 0.3
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`OpenAI API error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const content = data.choices?.[0]?.message?.content || '';
+
+        // Extract JSON from response
+        const jsonMatch = content.match(/```json\n?([\s\S]*?)\n?```/) || content.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) {
+            throw new Error('GPT did not return valid JSON format');
+        }
+
+        const analysisResult = JSON.parse(jsonMatch[1] || jsonMatch[0]);
+        console.log('GPT analysis completed:', analysisResult);
+        return analysisResult;
+
+    } catch (error) {
+        console.error('GPT analysis failed:', error);
+        throw new Error(`Bill analysis failed: ${error.message}`);
+    }
+}
+
+// SIMPLIFIED RESULTS GENERATOR
+async function generateSimplifiedResults({ billLines, eobLines, analysis, insuranceInfo }) {
+    console.log('Generating simplified results...');
+
+    const lineAudit = billLines.map(bill => {
+        const eob = eobLines.find(e => e.code === bill.code);
+        return {
+            lineId: bill.lineId || bill.code,
+            code: bill.code,
+            description: bill.description,
+            charge_cents: bill.charge_cents,
+            allowed_cents: eob?.allowed_cents,
+            patient_resp_cents_bill: bill.patient_resp_cents || eob?.patient_resp_cents
+        };
+    });
+
+    return {
+        caseId: `gpt-analysis-${Date.now()}`,
+        summary: {
+            highLevelFindings: [`${analysis.summary.totalFindings} potential issues identified by GPT analysis`],
+            potentialSavings_cents: Math.round((analysis.summary.potentialSavings || 0) * 100),
+            basis: analysis.summary.confidenceLevel || 'gpt-analysis'
+        },
+        lineAudit,
+        detections: analysis.findings?.map((finding, index) => ({
+            ruleKey: `GPT-${index + 1}: ${finding.type}`,
+            severity: finding.severity,
+            explanation: finding.description,
+            actions: [finding.recommendation],
+            savings_cents: Math.round((finding.potentialSaving || 0) * 100),
+            evidence: { lineIds: finding.affectedLines || [] },
+            citations: [{ authority: 'GPT Analysis', title: 'AI-Powered Bill Review' }]
+        })) || [],
+        checklist: analysis.nextSteps || ['Review GPT analysis results', 'Contact provider if discrepancies found'],
+        appealLetter: generateSimpleAppealLetter(analysis),
+        scripts: {
+            provider: 'GPT analysis indicates potential billing issues. Please review detailed findings.',
+            payer: 'GPT analysis found processing discrepancies. Please review for reprocessing.'
+        },
+        citations: [{ authority: 'GPT-4o', title: 'AI-Powered Healthcare Bill Analysis' }],
+        metadata: {
+            processingTime: new Date().toISOString(),
+            analysisType: 'GPT-Only (Simplified)',
+            documentsProcessed: { bill: billLines.length > 0, eob: eobLines.length > 0 }
+        }
+    };
+}
+
+function generateSimpleAppealLetter(analysis) {
+    const findings = analysis.findings?.slice(0, 3) || [];
+    const findingsText = findings.map((f, i) =>
+        `${i + 1}. ${f.description} - Potential saving: $${(f.potentialSaving || 0).toFixed(2)}`
+    ).join('\n');
+
+    return `Dear Claims Review Team,
+
+I am writing to request a review of my medical bill based on AI-powered analysis that identified potential billing discrepancies.
+
+AI Analysis Summary:
+- Total findings: ${analysis.summary.totalFindings}
+- Confidence level: ${analysis.summary.confidenceLevel}
+- Potential savings: $${(analysis.summary.potentialSavings || 0).toFixed(2)}
+
+Key Issues Identified:
+${findingsText}
+
+I request that you review these findings and provide corrected billing if errors are confirmed.
+
+Thank you for your attention to this matter.
+
+Sincerely,
+[Your Name]
+
+Note: This analysis was performed using AI-powered healthcare bill review technology.`;
 }

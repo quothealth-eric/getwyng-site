@@ -245,8 +245,7 @@ function setupKeyboardShortcuts() {
             '4': 'milestones',
             '5': 'roadmap',
             '6': 'learnings',
-            '7': 'contact',
-            '8': 'demo'  // Added demo shortcut
+            '7': 'contact'
         };
 
         if (shortcuts[e.key] && !e.ctrlKey && !e.metaKey) {
@@ -287,53 +286,3 @@ window.addEventListener('popstate', () => {
     navigateTo(hash || 'welcome');
 });
 
-/**
- * Demo access functionality
- */
-function setupDemoAccess() {
-    const devToggle = document.getElementById('dev-toggle');
-    const demoApp = document.getElementById('demo-app');
-    const comingSoonContent = document.querySelector('.coming-soon-content');
-
-    // Check URL parameters for demo access
-    const urlParams = new URLSearchParams(window.location.search);
-    const showDemo = urlParams.get('demo') === 'true' || localStorage.getItem('demo-access') === 'true';
-
-    if (showDemo && demoApp) {
-        demoApp.style.display = 'block';
-        if (comingSoonContent) {
-            comingSoonContent.style.display = 'none';
-        }
-    }
-
-    // Developer toggle functionality
-    if (devToggle) {
-        devToggle.addEventListener('click', () => {
-            const isCurrentlyShown = demoApp && demoApp.style.display === 'block';
-
-            if (!isCurrentlyShown) {
-                // Show demo
-                if (demoApp) demoApp.style.display = 'block';
-                if (comingSoonContent) comingSoonContent.style.display = 'none';
-                localStorage.setItem('demo-access', 'true');
-                devToggle.textContent = 'Hide Demo';
-            } else {
-                // Hide demo
-                if (demoApp) demoApp.style.display = 'none';
-                if (comingSoonContent) comingSoonContent.style.display = 'block';
-                localStorage.removeItem('demo-access');
-                devToggle.textContent = 'Developer Access';
-            }
-        });
-
-        // Update toggle text based on current state
-        if (showDemo) {
-            devToggle.textContent = 'Hide Demo';
-        }
-    }
-}
-
-// Initialize demo access when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    setupDemoAccess();
-});
