@@ -102,15 +102,23 @@ async function runAdvancedAuditPipeline({ billFile, eobFile, insuranceInfo }) {
 
         // CRITICAL CHECK: Verify we have real data, not empty/mock data
         if (billLines.length === 0 && eobLines.length === 0) {
+            console.error('CRITICAL: No lines extracted from either document');
             throw new Error('Document processing failed - no lines extracted from uploaded documents. Please check file format and OpenAI API configuration.');
         }
 
-        if (billLines.length === 5 &&
-            billLines.some(l => l.code === '99213') &&
-            billLines.some(l => l.code === '36415') &&
-            billLines.some(l => l.code === '82962') &&
-            billLines.some(l => l.code === '96372')) {
-            throw new Error('DETECTED MOCK DATA: The system returned test data instead of processing your documents. Please check your OpenAI API key configuration.');
+        // Log extracted codes for debugging
+        const billCodes = billLines.map(l => l.code);
+        const eobCodes = eobLines.map(l => l.code);
+        console.log('Extracted bill codes:', billCodes);
+        console.log('Extracted EOB codes:', eobCodes);
+
+        // Check for suspicious mock data patterns
+        const suspiciousCodes = ['99213', '36415', '82962', '96372'];
+        const hasSuspiciousCodes = suspiciousCodes.every(code => billCodes.includes(code));
+
+        if (billLines.length === 5 && hasSuspiciousCodes) {
+            console.error('MOCK DATA DETECTED:', { billCodes, totalLines: billLines.length });
+            throw new Error('DETECTED MOCK DATA: The system returned test data instead of processing your documents. Check your OpenAI API key and ensure documents contain real healthcare data.');
         }
 
         // Step 3: Intelligent line matching
@@ -150,6 +158,7 @@ async function performAdvancedOCR(file, docType) {
         if (file.mimetype === 'application/pdf') {
             // PDF processing pipeline - optimized for serverless
             const pdfBuffer = fs.readFileSync(file.filepath);
+            console.log(`PDF file read: ${pdfBuffer.length} bytes`);
 
             // Try PDF text extraction first (faster and works great in serverless)
             try {
@@ -157,13 +166,20 @@ async function performAdvancedOCR(file, docType) {
                 const pdfData = await pdfParse.default(pdfBuffer);
                 extractedText = pdfData.text;
                 console.log(`PDF text extracted: ${extractedText.length} characters`);
+                console.log(`PDF text preview: ${extractedText.substring(0, 300)}...`);
+
+                if (extractedText.length === 0) {
+                    console.warn('PDF text extraction returned empty text');
+                }
             } catch (error) {
-                console.log('PDF text extraction failed, will use GPT-4o vision analysis');
+                console.error('PDF text extraction failed:', error);
+                console.log('Will use GPT-4o vision analysis instead');
                 extractedText = ''; // GPT-4o will handle this via vision
             }
         } else {
             // Image processing pipeline - serverless compatible
             const imageBuffer = fs.readFileSync(file.filepath);
+            console.log(`Image file read: ${imageBuffer.length} bytes, mimetype: ${file.mimetype}`);
 
             // Light preprocessing with JIMP (serverless compatible)
             const processedImage = await preprocessImage(imageBuffer);
@@ -171,6 +187,7 @@ async function performAdvancedOCR(file, docType) {
             // Use simplified OCR approach for serverless
             extractedText = await performSimplifiedOCR(processedImage);
             console.log(`Image processing completed for GPT-4o analysis`);
+            console.log(`Extracted text preview: ${extractedText.substring(0, 300)}...`);
         }
 
         // Use GPT-4o for intelligent structure extraction
@@ -369,13 +386,23 @@ Return ONLY valid JSON in this format:
         }
 
         const jsonStr = jsonMatch[1] || jsonMatch[0];
-        console.log(`Attempting to parse JSON: ${jsonStr.substring(0, 200)}...`);
+        console.log(`Attempting to parse JSON: ${jsonStr.substring(0, 500)}...`);
 
         const parsed = JSON.parse(jsonStr);
 
         if (!parsed.lines || !Array.isArray(parsed.lines)) {
             console.error('GPT response missing lines array:', parsed);
             throw new Error('GPT-4o response missing required lines array');
+        }
+
+        // Check for suspicious mock data in the parsed response
+        const extractedCodes = parsed.lines.map(l => l.code).filter(Boolean);
+        console.log(`GPT extracted codes for ${docType}:`, extractedCodes);
+
+        if (extractedCodes.includes('99213') && extractedCodes.includes('36415') && extractedCodes.includes('82962')) {
+            console.error(`SUSPICIOUS: GPT returned mock-like codes for ${docType}:`, extractedCodes);
+            console.error('Full GPT response:', content);
+            throw new Error(`GPT-4o returned suspicious test data codes instead of processing real ${docType}. This suggests the document may not have been processed correctly.`);
         }
 
         console.log(`GPT-4o successfully extracted ${parsed.lines.length} lines from ${docType}`);
