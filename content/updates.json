@@ -1,5 +1,25 @@
 [
     {
+        "date": "2025-05-01",
+        "title": "Predicting and Pinpointing - Finding Our True Differentiator",
+        "file": "2025-05-01-predicting-pinpointing.md"
+    },
+    {
+        "date": "2025-04-01",
+        "title": "Wyng is Born - From Quot Health to Guardian Angel",
+        "file": "2025-04-01-wyng-rebirth.md"
+    },
+    {
+        "date": "2025-03-01",
+        "title": "The Consumer Pivot - From Compliance to Empowerment",
+        "file": "2025-03-01-consumer-pivot.md"
+    },
+    {
+        "date": "2025-01-01",
+        "title": "New Year, New Guidance, New Uncertainties",
+        "file": "2025-01-01-new-guidance.md"
+    },
+    {
         "date": "2024-12-11",
         "title": "Third LOI Signed + Pilot Prep Mode",
         "file": "2024-12-11-third-loi.md"
@@ -10,8 +30,38 @@
         "file": "2024-11-15-ios-progress.md"
     },
     {
+        "date": "2024-11-01",
+        "title": "The Difficult Conversation",
+        "file": "2024-11-01-difficult-decisions.md"
+    },
+    {
         "date": "2024-10-22",
         "title": "Pivoting Fundraise Strategy",
         "file": "2024-10-22-fundraise-pivot.md"
+    },
+    {
+        "date": "2024-10-01",
+        "title": "When Vision Doesn't Align",
+        "file": "2024-10-01-vision-disconnect.md"
+    },
+    {
+        "date": "2024-09-01",
+        "title": "Building While the Foundation Crumbles",
+        "file": "2024-09-01-prototype-reality.md"
+    },
+    {
+        "date": "2024-08-01",
+        "title": "The Solo Grind - When Schedules Don't Align",
+        "file": "2024-08-01-solo-grind.md"
+    },
+    {
+        "date": "2024-07-15",
+        "title": "Finding (and Losing) a Co-Founder",
+        "file": "2024-07-15-cofounder-chapter.md"
+    },
+    {
+        "date": "2024-04-01",
+        "title": "The Beginning - Finding the Right Foundation",
+        "file": "2024-04-01-founding-journey.md"
     }
 ]

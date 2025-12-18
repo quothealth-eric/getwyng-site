@@ -3,6 +3,44 @@
 
 ---
 
+## 🤝 On Co-Founder Relationships
+
+### What I thought:
+> "Working together before + mutual excitement = good co-founder fit."
+
+### What happened:
+We spent months building legally and then had to spend time and money undoing it all. We only had one official meeting in months. Clear vision misalignment emerged.
+
+### The lesson:
+**Compatibility is more than professional history.** Co-founders must align on:
+- Working style and availability
+- Vision for the end product
+- Communication preferences
+- Urgency and timeline
+- Risk tolerance
+
+**Key insight:** External structure (paperwork, equity splits) can't fix internal dysfunction. Test the relationship before you legalize it.
+
+---
+
+## 🔄 On Pivots and Political Landscape
+
+### What I thought:
+> "Price transparency regulations are stable—build on them."
+
+### What happened:
+New administration brought uncertainty. Would TiC requirements still exist? Health insurance lobbying power was real. The regulatory foundation of our B2B model was at risk.
+
+### The lesson:
+**Build on problems that can't be regulated away.** Pivoting from compliance tools (for insurers) to empowerment tools (for consumers) aligned us with permanent pain points:
+- 80%+ of bills have errors
+- Information imbalance creates power differentials
+- People need transparency at the moment of decision
+
+**Key insight:** When external uncertainty threatens your foundation, refocus on problems that transcend political cycles.
+
+---
+
 ## 💰 On Fundraising
 
 ### What I thought:
@@ -67,6 +105,38 @@ You *can* do it all. You just can't do it all *fast*. And fundraising as a solo 
 **Advisors aren't names on a slide.** My advisors (Mark, Chad, Kashyap) function as fractional operators. Weekly calls. Real decisions. Actual work.
 
 The right co-founder will come—but only when I can offer a funded company with traction, not just an idea.
+
+---
+
+## 🎭 On Rebranding and Identity
+
+### What I thought:
+> "The product vision is what matters—names don't."
+
+### What happened:
+Quot Health felt technical and industry-focused. When we pivoted to consumers, we needed something that felt like a helper, not a vendor. "Wyng" as a Healthcare Guardian Angel resonated immediately.
+
+### The lesson:
+**Brand identity should match your user's emotional need.** People don't want another healthcare vendor—they want someone in their corner. The rebrand aligned our identity with our mission of being there whenever and wherever people need healthcare support.
+
+---
+
+## 👶 On Personal Life Changes
+
+### What I thought:
+> "I can maintain the same pace and risk tolerance after having a child."
+
+### What happened:
+Everything changed. Available time, resource consciousness, sense of urgency, and relationship with risk all shifted fundamentally.
+
+### The lesson:
+**Life changes make you a better founder, not a worse one.** Having a child forced me to:
+- Be more discerning about resource allocation
+- Focus on what truly matters
+- Move with greater intentionality
+- Think longer-term about sustainability
+
+**Key insight:** Constraints often create focus. The limitation became a clarifying force.
 
 ---
 

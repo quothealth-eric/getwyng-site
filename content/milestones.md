@@ -5,59 +5,107 @@
 
 ## 2024
 
-### `commit` 2024-Q1 | **FOUNDING**
+### `commit` 2024-04 | **FOUNDING**
 ```
-→ Made the decision. Started building.
-→ "If not me, who? If not now, when?"
-→ Began coding the audit rule engine
-```
-
-### `commit` 2024-Q2 | **PRODUCT**
-```
-✓ First version of 18-rule audit engine operational
-✓ Regulatory citations auto-generating
-✓ Core architecture designed
+✓ Delaware incorporation with startup-focused attorney
+✓ Researched Transparency in Coverage regulations
+✓ Started YC application process
+→ Company name: Quot Health, Inc.
+→ Mission: Price transparency for smaller health plans
 ```
 
-### `commit` 2024-Q3 | **TEAM**
+### `commit` 2024-07 | **COFOUNDER**
 ```
-✓ Assembled advisory team:
-  - Mark O'Brien (ML/AI architecture)
-  - Chad Pendleton (Health insurance exec)
-  - Kashyap Kompella (Serial founder)
+✓ Found technical co-founder candidate
+✓ Developed initial product vision
+✓ Identified target market: regional health plans
+→ Focus: White-label price transparency tools
 ```
 
-### `commit` 2024-Q4 | **PRODUCT**
+### `commit` 2024-08 | **SOLO BUILDING**
 ```
-✓ Web application MVP functional
-✓ Bill upload + OCR flow working
-✓ Cost prediction engine built
-→ Started iOS development
+✓ Downloaded TiC files for analysis
+✓ Researched insurance verification APIs
+✓ Built product requirements repository
+→ Compatibility issues with co-founder emerging
+```
+
+### `commit` 2024-09 | **PRODUCT**
+```
+✓ Developed wireframes and visual design
+✓ Finalized equity split: 51%/49%
+✓ All legal paperwork signed
+→ Basic prototype functional
+```
+
+### `commit` 2024-10 | **MVP**
+```
+✓ API connections identified and integrated
+✓ MVP development continued
+→ Vision misalignment with co-founder discovered
+→ One official meeting held (red flag)
+```
+
+### `commit` 2024-11 | **DIFFICULT DECISIONS**
+```
+✓ Co-founder relationship severed
+✓ MVP completed and functional:
+  - User demographic input
+  - Insurance verification
+  - TiC file integration
+  - Provider-specific pricing
+✓ Market validation conversations
+→ "How is this different from Optum?" challenge
+→ Commitment to competition vs. consolidation
 ```
 
 ---
 
 ## 2025
 
-### `commit` 2025-01 | **STRATEGY**
+### `commit` 2025-01 | **ADVISOR + PIVOT PLANNING**
+```
+✓ Met key advisor: insurance executive with deep industry experience
+✓ Finalized co-founder separation paperwork
+✓ Assessed political landscape impact on regulations
+→ New administration potentially changing TiC requirements
+→ Began considering consumer-focused pivot
+```
+
+### `commit` 2025-02 | **STRATEGY REFINEMENT**
 ```
 ✓ Refined go-to-market: B2B first, DTC second
 ✓ Identified self-funded employers as ICP
 ✓ Began benefits broker outreach
 ```
 
-### `commit` 2025-02 | **TRACTION**
+### `commit` 2025-03 | **FIRST MAJOR PIVOT**
 ```
-✓ First employer conversation (intro via Chad)
-✓ Validated pain point with HR leaders
-→ Lesson: They want PROOF, not promises
+✓ Decision: Shift from B2B compliance to consumer empowerment
+✓ Focus: Healthcare billing error recovery (80%+ of bills have errors)
+✓ New value prop: Technology-based tool vs. service-only competitors
+✓ UI/UX redesign for consumer-facing application
+→ Leveraging TiC data for consumer bill auditing
 ```
 
-### `commit` 2025-03 | **PRODUCT**
+### `commit` 2025-04 | **REBRAND & NEW LIFE**
 ```
-✓ iOS app core navigation complete
-✓ SwiftUI implementation solid
-✓ Integrated with backend APIs
+✓ Company rebrand: Quot Health → Wyng
+✓ New attorney: startup specialist and multi-time founder
+✓ Vision: Healthcare Guardian Angel concept
+✓ Personal milestone: First child born
+→ New urgency and resource consciousness
+→ Clearer focus on scalable AI-driven solution
+```
+
+### `commit` 2025-05 | **PRODUCT DIFFERENTIATION**
+```
+✓ Defined core functions: Predicting + Pinpointing
+✓ Cost prediction engine refinement
+✓ Billing error detection capabilities enhanced
+✓ Identified timing problem: Information needed at moment of decision
+→ Focus: Accessibility and accuracy of audit tools
+→ Information imbalance = power differential insight
 ```
 
 ### `commit` 2025-Q2 | **FUNDRAISE**
