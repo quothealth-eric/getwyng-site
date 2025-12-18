@@ -1127,3 +1127,65 @@ body {
         text-align: center;
     }
 }
+
+/* Coming Soon Demo Styles */
+.coming-soon-content {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.demo-preview {
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-left: 4px solid var(--accent-cyan);
+}
+
+.demo-preview h4 {
+    color: var(--accent-cyan);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.feature-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.feature-list li:last-child {
+    border-bottom: none;
+}
+
+.notify-section {
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+.nav-link {
+    text-decoration: underline;
+}
+
+.nav-link:hover {
+    color: var(--accent-yellow) !important;
+}
+
+.dev-access {
+    text-align: center;
+}
+
+#dev-toggle:hover {
+    color: var(--accent-yellow) !important;
+}

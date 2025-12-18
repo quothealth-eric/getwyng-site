@@ -42,7 +42,7 @@
 - [ ] Hit $125K MRR
 
 ### Team
-- [ ] Hire CTO (Mark O'Brien)
+- [ ] Hire CTO
 - [ ] First customer success hire
 
 ---

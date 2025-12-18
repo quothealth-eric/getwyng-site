@@ -108,54 +108,43 @@
 → Information imbalance = power differential insight
 ```
 
-### `commit` 2025-Q2 | **FUNDRAISE**
+### `commit` 2025-05 | **FUNDRAISE START**
 ```
-→ Started pre-seed conversations
-→ Feedback: "Love it, but need traction"
-→ Decision: Pivot to F&F round
-```
-
-### `commit` 2025-09 | **TRACTION**
-```
-✓ SIGNED LOI #1 - Youth Villages
-✓ First enterprise commitment!
-✓ Validation: The pain is real
+→ Started fundraise journey: $1.5M target
+→ Initial focus: VCs and institutional investors
+→ Multiple investor conversations initiated
 ```
 
-### `commit` 2025-10 | **MILESTONE**
+### `commit` 2025-08 | **MOBILE DEVELOPMENT**
 ```
-✓ Financial model v2 complete
-✓ Unit economics validated: $13.46 variable cost
-✓ SIGNED LOI #2 - Modivcare
-```
-
-### `commit` 2025-10-22 | **STRATEGY**
-```
-→ Pivoted fundraise: F&F round ($250K-$1M)
-→ Raise from strength, not desperation
-→ Use LOIs as proof, not promises
+✓ Started iOS app development
+✓ SwiftUI implementation begins
+✓ Mobile-first user experience design
+→ Native app for seamless bill scanning
 ```
 
-### `commit` 2025-11 | **PRODUCT**
+### `commit` 2025-Q3 | **FUNDRAISE PIVOT**
 ```
-✓ iOS app 85% complete
-✓ Bill scanning flow polished
-✓ Authentication + onboarding done
+→ Investor feedback: "Love it, but need traction"
+→ Strategic decision: Pivot to Friends & Family round
+→ New approach: Smaller raise, preserve equity, prove concept
+→ Goal: Fund pilot, generate revenue, bootstrap growth
 ```
 
-### `commit` 2025-12 | **TRACTION**
+### `commit` 2025-Q4 | **PRODUCT FOCUS**
 ```
-✓ SIGNED LOI #3 - Upstart
-✓ 30,000+ lives now in pipeline
-✓ Q1 2026 pilot dates confirmed
+✓ iOS app development continues
+✓ Bill audit demo functionality enhanced
+✓ Financial model refined
+→ Building toward pilot-ready product
 ```
 
 ### `commit` 2025-12 | **CURRENT**
 ```
-→ Preparing production infrastructure (GCP)
-→ App Store submission prep
-→ Pilot implementation kit in progress
+→ iOS app development ongoing
+→ Preparing pilot infrastructure
 → F&F round conversations active
+→ Building toward revenue-generating pilots
 ```
 
 ---

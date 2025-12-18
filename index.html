@@ -260,12 +260,38 @@
                 </div>
                 <div class="output">
                     <div class="demo-container">
-                        <h3>🔬 Try the Wyng Bill Audit Engine</h3>
-                        <p class="dim">Upload your medical bill and EOB to see our 18-rule AI audit in action.</p>
-                        <p class="highlight-yellow">⚠️ Beta: For demonstration purposes. Do not upload documents with sensitive information you're not comfortable sharing.</p>
+                        <h3>🔬 Wyng Bill Audit Engine - Coming Soon</h3>
+                        <div class="coming-soon-content">
+                            <p class="highlight-blue">🚧 We're putting the finishing touches on our bill audit demo.</p>
+                            <p class="dim">Our 18-rule AI audit engine is being refined to ensure the most accurate results for your healthcare bills.</p>
 
-                        <div id="demo-app">
+                            <div class="demo-preview">
+                                <h4>What You'll Be Able To Do:</h4>
+                                <ul class="feature-list">
+                                    <li>📄 Upload medical bills and EOBs</li>
+                                    <li>🔍 Get instant AI-powered audit results</li>
+                                    <li>💰 Discover potential savings opportunities</li>
+                                    <li>📋 Receive actionable next steps</li>
+                                    <li>📞 Get phone scripts for provider/payer calls</li>
+                                </ul>
+                            </div>
+
+                            <div class="notify-section">
+                                <p><strong>Want to be notified when it's ready?</strong></p>
+                                <p class="dim">Reach out via our <span class="nav-link" onclick="navigateTo('contact')" style="color: var(--accent-cyan); cursor: pointer;">contact page</span> to get early access.</p>
+                            </div>
+                        </div>
+
+                        <!-- Hidden demo for testing - accessible via URL parameter -->
+                        <div id="demo-app" style="display: none;">
                             <!-- React app mounts here -->
+                        </div>
+
+                        <!-- Developer access -->
+                        <div class="dev-access" style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #333;">
+                            <p class="dim" style="font-size: 0.8rem;">
+                                🔧 <span id="dev-toggle" style="cursor: pointer; color: var(--accent-cyan);">Developer Access</span>
+                            </p>
                         </div>
                     </div>
                 </div>

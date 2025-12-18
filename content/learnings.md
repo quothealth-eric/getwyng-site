@@ -102,7 +102,7 @@ This is why I built the 18-rule audit engine myself—I needed to know every edg
 You *can* do it all. You just can't do it all *fast*. And fundraising as a solo founder is harder—investors worry about single points of failure.
 
 ### The lesson:
-**Advisors aren't names on a slide.** My advisors (Mark, Chad, Kashyap) function as fractional operators. Weekly calls. Real decisions. Actual work.
+**Advisors aren't names on a slide.** My advisors function as fractional operators. Weekly calls. Real decisions. Actual work.
 
 The right co-founder will come—but only when I can offer a funded company with traction, not just an idea.
 
