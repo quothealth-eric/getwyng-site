@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Instructions - Wyng Demo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <div class="terminal-controls">
+                <span class="control control-red"></span>
+                <span class="control control-yellow"></span>
+                <span class="control control-green"></span>
+            </div>
+            <div class="terminal-title">debug@wyng: ~/troubleshooting</div>
+        </div>
+
+        <div class="terminal-body">
+            <div class="section active">
+                <div class="section-header">
+                    <span class="back-btn" onclick="window.location.href='demo.html'">← back to demo</span>
+                    <span class="file-path">~/debug-instructions.md</span>
+                </div>
+
+                <div class="output">
+                    <h2>🔍 Debug Instructions</h2>
+
+                    <h3>Step 1: Test the Demo</h3>
+                    <ol>
+                        <li>Go to <a href="demo.html" style="color: var(--accent-cyan);">demo.html</a></li>
+                        <li>Upload your test files</li>
+                        <li><strong>Open browser console</strong> (F12 → Console tab)</li>
+                        <li>Look for detailed debug output starting with <code>=== API RESPONSE DEBUG ===</code></li>
+                    </ol>
+
+                    <h3>Step 2: Check Vercel Function Logs</h3>
+                    <ol>
+                        <li>Go to <a href="https://vercel.com/dashboard" target="_blank" style="color: var(--accent-cyan);">Vercel Dashboard</a></li>
+                        <li>Click on your <strong>getwyng-site</strong> project</li>
+                        <li>Click the <strong>"Functions"</strong> tab at the top</li>
+                        <li>Click on <code>/api/analyze</code> function</li>
+                        <li>Click <strong>"View Function Logs"</strong></li>
+                        <li>Test the demo, then refresh the logs to see new entries</li>
+                    </ol>
+
+                    <h3>Step 3: Alternative - Check Deployment Logs</h3>
+                    <ol>
+                        <li>In Vercel Dashboard → your project</li>
+                        <li>Click the <strong>"Deployments"</strong> tab</li>
+                        <li>Click on the most recent deployment</li>
+                        <li>Click <strong>"View Function Logs"</strong> or <strong>"Runtime Logs"</strong></li>
+                    </ol>
+
+                    <h3>What to Look For</h3>
+                    <div class="demo-preview" style="text-align: left;">
+                        <p><strong>In Browser Console:</strong></p>
+                        <ul>
+                            <li><code>Full results: {...}</code> - Complete API response</li>
+                            <li><code>Line audit codes: [...]</code> - Extracted CPT codes</li>
+                            <li>Any error messages</li>
+                        </ul>
+
+                        <p><strong>In Vercel Logs:</strong></p>
+                        <ul>
+                            <li><code>PDF file read: X bytes</code> - File upload success</li>
+                            <li><code>PDF text extracted: X characters</code> - OCR success</li>
+                            <li><code>GPT extracted codes: [...]</code> - What GPT found</li>
+                            <li><code>MOCK DATA DETECTED</code> or <code>SUSPICIOUS</code> warnings</li>
+                        </ul>
+                    </div>
+
+                    <h3>Quick Tests</h3>
+                    <div class="notify-section">
+                        <p><strong>Test 1:</strong> Check if files are uploading</p>
+                        <p>Look for <code>PDF file read: [number] bytes</code> in logs</p>
+
+                        <p><strong>Test 2:</strong> Check if text is extracted</p>
+                        <p>Look for <code>PDF text extracted: [number] characters</code></p>
+
+                        <p><strong>Test 3:</strong> Check what codes GPT finds</p>
+                        <p>Look for <code>GPT extracted codes for bill: [...]</code></p>
+                    </div>
+
+                    <div style="margin-top: 2rem; padding: 1rem; background: var(--bg-tertiary); border-radius: 8px;">
+                        <p><strong>💡 Tip:</strong> The browser console will show you exactly what the API is returning. If you see the mock data there, we know the API is generating it. If you see errors, we know why it's failing.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

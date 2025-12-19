@@ -559,27 +559,74 @@ class WyngAuditDemo {
             }
 
             const results = await response.json();
+
+            // DEBUG: Log the full response to console for investigation
+            console.log('=== API RESPONSE DEBUG ===');
+            console.log('Response status:', response.status);
+            console.log('Full results:', JSON.stringify(results, null, 2));
+            console.log('Line audit codes:', results.lineAudit?.map(l => l.code));
+            console.log('Detection rules:', results.detections?.map(d => d.ruleKey));
+            console.log('=== END DEBUG ===');
+
+            // Add debug info to results for display
+            if (results && results.metadata) {
+                results.metadata.debugInfo = {
+                    responseTime: new Date().toISOString(),
+                    responseStatus: response.status,
+                    analysisType: results.metadata.analysisType || 'unknown'
+                };
+            }
+
             this.setState({ step: 4, results, processing: false });
 
         } catch (error) {
             console.error('Analysis error:', error);
-            // Show error instead of mock data
+
+            // Try to get more details from the response
+            let errorDetails = error.message;
+            if (error.response) {
+                try {
+                    const errorText = await error.response.text();
+                    errorDetails += `\nAPI Response: ${errorText}`;
+                } catch (e) {
+                    errorDetails += `\nResponse Status: ${error.response.status} ${error.response.statusText}`;
+                }
+            }
+
+            // Show detailed error instead of mock data
             this.setState({
                 step: 4,
                 results: {
                     caseId: 'error-' + Date.now(),
                     summary: {
-                        highLevelFindings: ['Document processing failed - please check your OpenAI API key and try again'],
+                        highLevelFindings: ['DEBUGGING: Document processing failed - see details below'],
                         potentialSavings_cents: 0,
                         basis: 'error'
                     },
                     lineAudit: [],
-                    detections: [],
-                    checklist: ['Verify OpenAI API key is configured in Vercel environment', 'Check file formats are supported (PDF, PNG, JPG)', 'Try uploading different documents'],
-                    appealLetter: `Error: Could not process documents. Please check:\n1. OpenAI API key is configured\n2. Files are valid PDFs or images\n3. Try again with different files\n\nError details: ${error.message}`,
+                    detections: [{
+                        ruleKey: 'DEBUG INFO',
+                        severity: 'high',
+                        explanation: `Full error details: ${errorDetails}`,
+                        actions: [
+                            'Check Vercel function logs',
+                            'Verify OpenAI API key is set',
+                            'Check uploaded file format and size'
+                        ],
+                        savings_cents: 0,
+                        evidence: { lineIds: [] },
+                        citations: [{ authority: 'Debug', title: 'Error Investigation' }]
+                    }],
+                    checklist: [
+                        'Check browser console for additional error details',
+                        'Verify files are valid PDFs or images under 25MB',
+                        'Try different documents to isolate the issue',
+                        `Error occurred at: ${new Date().toISOString()}`
+                    ],
+                    appealLetter: `DEBUGGING INFORMATION:\n\nError occurred during document processing.\n\nError details: ${errorDetails}\n\nTimestamp: ${new Date().toISOString()}\n\nThis information can help debug the issue.`,
                     scripts: {
-                        provider: 'Error processing documents - please try again',
-                        payer: 'Error processing documents - please try again'
+                        provider: 'DEBUG: Document processing failed - see error details in appeal letter',
+                        payer: 'DEBUG: Document processing failed - see error details in appeal letter'
                     },
                     citations: []
                 },
