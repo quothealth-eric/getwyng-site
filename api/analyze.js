@@ -13,8 +13,10 @@ export default async function handler(req, res) {
     }
 
     console.log('=== AUDIT API DEBUG START ===');
+    console.log('Environment variables available:', Object.keys(process.env).filter(key => key.includes('OPENAI')));
     console.log('API Key present:', !!process.env.OPENAI_API_KEY);
-    console.log('API Key prefix:', process.env.OPENAI_API_KEY?.substring(0, 10) + '...');
+    console.log('API Key prefix:', process.env.OPENAI_API_KEY?.substring(0, 15) + '...');
+    console.log('API Key length:', process.env.OPENAI_API_KEY?.length);
 
     try {
         const { IncomingForm } = await import('formidable');
