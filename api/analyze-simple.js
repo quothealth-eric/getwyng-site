@@ -22,12 +22,22 @@ export default async function handler(req, res) {
 
     console.log('=== SIMPLE ANALYSIS API ===');
 
+    // Debug environment variables
+    const hasKey = !!process.env.OPENAI_API_KEY;
+    const keyLength = process.env.OPENAI_API_KEY?.length;
+    console.log('OpenAI API Key check:', {
+        hasKey,
+        keyLength,
+        keyPrefix: process.env.OPENAI_API_KEY?.substring(0, 7) + '...',
+        envVars: Object.keys(process.env).filter(k => k.includes('OPENAI'))
+    });
+
     // Check for OpenAI API key
     if (!process.env.OPENAI_API_KEY) {
-        console.error('OPENAI_API_KEY not found');
+        console.error('OPENAI_API_KEY not found in environment');
         return res.status(500).json({
             error: 'Configuration error',
-            details: 'OpenAI API key not configured in environment'
+            details: 'OpenAI API key not configured. Please add OPENAI_API_KEY to Vercel environment variables.'
         });
     }
 
@@ -188,7 +198,14 @@ Return a detailed JSON analysis with this structure:
             if (response.status === 401) {
                 return res.status(401).json({
                     error: 'Authentication failed',
-                    details: 'Invalid OpenAI API key'
+                    details: 'Invalid OpenAI API key. Please check that OPENAI_API_KEY in Vercel environment variables is correct.'
+                });
+            }
+
+            if (response.status === 403) {
+                return res.status(403).json({
+                    error: 'Access denied',
+                    details: 'OpenAI API access denied. This may be due to billing issues, API key permissions, or rate limits.'
                 });
             }
 
