@@ -1,34 +1,8 @@
 {
-    "headers": [
-        {
-            "source": "/(.*)",
-            "headers": [
-                {
-                    "key": "Cache-Control",
-                    "value": "public, max-age=0, must-revalidate"
-                }
-            ]
-        },
-        {
-            "source": "/content/(.*)",
-            "headers": [
-                {
-                    "key": "Cache-Control",
-                    "value": "public, max-age=300"
-                }
-            ]
-        }
-    ],
     "rewrites": [
         {
-            "source": "/(?!api)(.*)",
+            "source": "/((?!api).*)",
             "destination": "/index.html"
         }
-    ],
-    "cleanUrls": true,
-    "functions": {
-        "api/analyze.js": {
-            "maxDuration": 30
-        }
-    }
+    ]
 }
