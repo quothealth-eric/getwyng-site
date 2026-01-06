@@ -123,28 +123,37 @@
 → Native app for seamless bill scanning
 ```
 
-### `commit` 2025-Q3 | **FUNDRAISE PIVOT**
+### `commit` 2025-09 | **FUNDRAISE PIVOT + PLAYGROUND**
 ```
-→ Investor feedback: "Love it, but need traction"
-→ Strategic decision: Pivot to Friends & Family round
-→ New approach: Smaller raise, preserve equity, prove concept
-→ Goal: Fund pilot, generate revenue, bootstrap growth
-```
-
-### `commit` 2025-Q4 | **PRODUCT FOCUS**
-```
-✓ iOS app development continues
-✓ Bill audit demo functionality enhanced
-✓ Financial model refined
-→ Building toward pilot-ready product
+✓ Investor feedback: "Love it, but need traction"
+✓ Strategic decision: Pivot to Friends & Family round
+✓ New approach: Smaller raise ($250-500K), preserve equity, prove concept
+✓ Launched GetWyng.co as experimental playground
+✓ Built WyngAI chat with regulatory citations
+→ Goal: Fund pilots, generate revenue, bootstrap growth
+→ Combat misinformation with accurate regulatory data
 ```
 
-### `commit` 2025-12 | **CURRENT**
+### `commit` 2025-11 | **VC OPPORTUNITY**
 ```
-→ iOS app development ongoing
-→ Preparing pilot infrastructure
-→ F&F round conversations active
-→ Building toward revenue-generating pilots
+✓ Found "Quit by Christmas" VC initiative
+✓ Applied last minute (deadline extended)
+✓ Partner reached out within 24 hours
+✓ Connected with portfolio founder
+✓ Learned about ICHRA market shift
+→ Employers moving away from direct health coverage
+→ ICHRAs transferring responsibility to employees
+```
+
+### `commit` 2025-12 | **AUDIT-AS-A-SERVICE PIVOT**
+```
+✓ Strategic pivot: B2C to B2B2C model
+✓ New concept: Audit-as-a-Service for ICHRA platforms
+✓ Building APIs for billing error detection
+✓ White-label infrastructure approach
+→ Reach thousands through single integrations
+→ "Powered by Wyng" protection layer
+→ Predictable B2B contracts vs. unpredictable B2C
 ```
 
 ---
@@ -153,17 +162,29 @@
 
 ### `commit` 2026-Q1 | **PLANNED**
 ```
-[ ] Launch iOS app
-[ ] Go live with 2-3 employer pilots
-[ ] Analyze 1,000+ bills
+[ ] Complete API infrastructure for ICHRA platforms
+[ ] Launch iOS app for direct consumer validation
+[ ] Partner with 2-3 ICHRA platforms for pilot
+[ ] Analyze 1,000+ bills through API integrations
 [ ] Prove savings ($3-6 PMPM)
-[ ] Close F&F round
+[ ] Close F&F round ($250-500K)
 ```
 
 ### `commit` 2026-Q2 | **PLANNED**
 ```
-[ ] Convert pilots to paid contracts
-[ ] Sign first benefits broker
+[ ] Convert ICHRA pilots to paid API contracts
+[ ] Launch "Powered by Wyng" partner program
+[ ] Build white-label reporting dashboards
+[ ] Achieve HIPAA compliance certification
+[ ] Hit $50K MRR from API subscriptions
+```
+
+### `commit` 2026-Q3 | **PLANNED**
+```
+[ ] Scale to 10+ ICHRA platform partners
+[ ] Process 10,000+ bills monthly
+[ ] Launch self-serve API onboarding
+[ ] Raise institutional round with proven B2B2C traction
 [ ] Hit $125K MRR
 ```
 
