@@ -115,13 +115,14 @@ async function runAdvancedAuditPipeline({ billFile, eobFile, insuranceInfo }) {
         console.log('Extracted EOB codes:', eobCodes);
 
         // Check for suspicious mock data patterns
-        const suspiciousCodes = ['99213', '36415', '82962', '96372'];
-        const hasSuspiciousCodes = suspiciousCodes.every(code => billCodes.includes(code));
+        // DISABLED: These codes (99213, 36415, 82962, 96372) are actually very common in real medical bills
+        // const suspiciousCodes = ['99213', '36415', '82962', '96372'];
+        // const hasSuspiciousCodes = suspiciousCodes.every(code => billCodes.includes(code));
 
-        if (billLines.length === 5 && hasSuspiciousCodes) {
-            console.error('MOCK DATA DETECTED:', { billCodes, totalLines: billLines.length });
-            throw new Error('DETECTED MOCK DATA: The system returned test data instead of processing your documents. Check your OpenAI API key and ensure documents contain real healthcare data.');
-        }
+        // if (billLines.length === 5 && hasSuspiciousCodes) {
+        //     console.error('MOCK DATA DETECTED:', { billCodes, totalLines: billLines.length });
+        //     throw new Error('DETECTED MOCK DATA: The system returned test data instead of processing your documents. Check your OpenAI API key and ensure documents contain real healthcare data.');
+        // }
 
         // Step 3: Intelligent line matching
         console.log('Step 3: Starting line matching...');
@@ -401,11 +402,12 @@ Return ONLY valid JSON in this format:
         const extractedCodes = parsed.lines.map(l => l.code).filter(Boolean);
         console.log(`GPT extracted codes for ${docType}:`, extractedCodes);
 
-        if (extractedCodes.includes('99213') && extractedCodes.includes('36415') && extractedCodes.includes('82962')) {
-            console.error(`SUSPICIOUS: GPT returned mock-like codes for ${docType}:`, extractedCodes);
-            console.error('Full GPT response:', content);
-            throw new Error(`GPT-4o returned suspicious test data codes instead of processing real ${docType}. This suggests the document may not have been processed correctly.`);
-        }
+        // DISABLED: These codes are actually common in real medical bills
+        // if (extractedCodes.includes('99213') && extractedCodes.includes('36415') && extractedCodes.includes('82962')) {
+        //     console.error(`SUSPICIOUS: GPT returned mock-like codes for ${docType}:`, extractedCodes);
+        //     console.error('Full GPT response:', content);
+        //     throw new Error(`GPT-4o returned suspicious test data codes instead of processing real ${docType}. This suggests the document may not have been processed correctly.`);
+        // }
 
         console.log(`GPT-4o successfully extracted ${parsed.lines.length} lines from ${docType}`);
         return parsed;

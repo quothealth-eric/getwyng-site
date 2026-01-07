@@ -549,7 +549,7 @@ class WyngAuditDemo {
             formData.append('eob', this.state.eobFile);
             formData.append('insuranceInfo', JSON.stringify(this.state.insuranceInfo));
 
-            const response = await fetch('/api/analyze-v2', {
+            const response = await fetch('/api/analyze', {
                 method: 'POST',
                 body: formData
             });
