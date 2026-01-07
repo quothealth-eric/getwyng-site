@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Bill Analysis Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        h1 { color: #4ade80; }
+        .upload-section {
+            background: #262626;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        input[type="file"] {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            background: #1a1a1a;
+            border: 2px solid #4ade80;
+            color: #fff;
+            border-radius: 4px;
+            width: 100%;
+        }
+        button {
+            background: #4ade80;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover { background: #22c55e; }
+        button:disabled {
+            background: #666;
+            cursor: not-allowed;
+        }
+        #results {
+            background: #262626;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .error { color: #ef4444; }
+        .success { color: #4ade80; }
+        .loading { color: #fbbf24; }
+    </style>
+</head>
+<body>
+    <h1>🔬 Local Bill Analysis Test</h1>
+
+    <div class="upload-section">
+        <h3>Upload Documents</h3>
+        <label>Medical Bill (PDF or Image):</label>
+        <input type="file" id="billFile" accept=".pdf,.png,.jpg,.jpeg">
+
+        <label>EOB - Explanation of Benefits (PDF or Image):</label>
+        <input type="file" id="eobFile" accept=".pdf,.png,.jpg,.jpeg">
+
+        <label>OpenAI API Key:</label>
+        <input type="password" id="apiKey" placeholder="sk-..." style="width: 100%; padding: 10px; margin: 10px 0; background: #1a1a1a; border: 2px solid #4ade80; color: #fff; border-radius: 4px;">
+
+        <button onclick="analyzeDocuments()">Analyze Documents</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        async function analyzeDocuments() {
+            const billFile = document.getElementById('billFile').files[0];
+            const eobFile = document.getElementById('eobFile').files[0];
+            const apiKey = document.getElementById('apiKey').value;
+            const resultsDiv = document.getElementById('results');
+
+            if (!billFile || !eobFile || !apiKey) {
+                resultsDiv.innerHTML = '<span class="error">Please upload both documents and enter API key</span>';
+                return;
+            }
+
+            resultsDiv.innerHTML = '<span class="loading">Analyzing documents...</span>';
+
+            try {
+                // Convert files to base64
+                const billBase64 = await fileToBase64(billFile);
+                const eobBase64 = await fileToBase64(eobFile);
+
+                // Call OpenAI directly
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-4o',
+                        messages: [
+                            {
+                                role: 'user',
+                                content: [
+                                    {
+                                        type: 'text',
+                                        text: `Analyze these medical documents:
+
+1. MEDICAL BILL (first image) - Extract ALL line items
+2. EOB (second image) - Extract ALL line items
+
+For each line, include: date, CPT code, description, amounts
+
+Then identify:
+- Billing errors or duplicates
+- Discrepancies between bill and EOB
+- Potential savings
+
+Return detailed JSON with all line items and findings.`
+                                    },
+                                    {
+                                        type: 'image_url',
+                                        image_url: {
+                                            url: `data:${billFile.type};base64,${billBase64}`
+                                        }
+                                    },
+                                    {
+                                        type: 'image_url',
+                                        image_url: {
+                                            url: `data:${eobFile.type};base64,${eobBase64}`
+                                        }
+                                    }
+                                ]
+                            }
+                        ],
+                        max_tokens: 4096,
+                        temperature: 0.1
+                    })
+                });
+
+                if (!response.ok) {
+                    const error = await response.text();
+                    throw new Error(`OpenAI API error: ${response.status} - ${error}`);
+                }
+
+                const data = await response.json();
+                const content = data.choices[0].message.content;
+
+                resultsDiv.innerHTML = `<span class="success">✅ Analysis Complete!</span>\n\n${content}`;
+
+            } catch (error) {
+                resultsDiv.innerHTML = `<span class="error">Error: ${error.message}</span>`;
+            }
+        }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const base64 = reader.result.split(',')[1];
+                    resolve(base64);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+    </script>
+</body>
+</html>
