@@ -9,16 +9,29 @@ import Jimp from 'jimp';
 export const config = {
     api: {
         bodyParser: false,
-        maxDuration: 60
+        maxDuration: 60,
+        sizeLimit: '25mb'
     },
 };
 
 export default async function handler(req, res) {
+    // Add CORS headers
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+    // Handle preflight requests
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
+
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
     console.log('=== AUDIT API DEBUG START ===');
+    console.log('Request method:', req.method);
+    console.log('Request headers:', req.headers);
     console.log('Environment variables available:', Object.keys(process.env).filter(key => key.includes('OPENAI')));
     console.log('API Key present:', !!process.env.OPENAI_API_KEY);
     console.log('API Key prefix:', process.env.OPENAI_API_KEY?.substring(0, 15) + '...');
