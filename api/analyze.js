@@ -1,12 +1,19 @@
 // api/analyze.js
 // Vercel Serverless Function for Advanced Bill Audit Analysis
 
-const formidable = require('formidable');
-const fs = require('fs').promises;
-const pdfParse = require('pdf-parse');
-const Jimp = require('jimp');
+import { IncomingForm } from 'formidable';
+import fs from 'fs/promises';
+import pdfParse from 'pdf-parse';
+import Jimp from 'jimp';
 
-async function handler(req, res) {
+export const config = {
+    api: {
+        bodyParser: false,
+        maxDuration: 60
+    },
+};
+
+export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
@@ -18,7 +25,7 @@ async function handler(req, res) {
     console.log('API Key length:', process.env.OPENAI_API_KEY?.length);
 
     try {
-        const { IncomingForm } = formidable;
+        // IncomingForm already imported at top
 
         const form = new IncomingForm({
             maxFileSize: 25 * 1024 * 1024, // Increased for high-res images
@@ -1173,10 +1180,4 @@ Sincerely,
 Note: This analysis was performed using AI-powered healthcare bill review technology.`;
 }
 
-module.exports = handler;
-module.exports.config = {
-    api: {
-        bodyParser: false,
-        maxDuration: 60
-    }
-};
+// ES module exports already at top of file
