@@ -6,13 +6,7 @@ const fs = require('fs').promises;
 const pdfParse = require('pdf-parse');
 const Jimp = require('jimp');
 
-module.exports.config = {
-    api: {
-        bodyParser: false,
-    },
-};
-
-module.exports = async function handler(req, res) {
+async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
@@ -1178,3 +1172,11 @@ Sincerely,
 
 Note: This analysis was performed using AI-powered healthcare bill review technology.`;
 }
+
+module.exports = handler;
+module.exports.config = {
+    api: {
+        bodyParser: false,
+        maxDuration: 60
+    }
+};
