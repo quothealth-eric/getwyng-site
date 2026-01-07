@@ -1,13 +1,18 @@
 // api/analyze.js
 // Vercel Serverless Function for Advanced Bill Audit Analysis
 
-export const config = {
+const formidable = require('formidable');
+const fs = require('fs').promises;
+const pdfParse = require('pdf-parse');
+const Jimp = require('jimp');
+
+module.exports.config = {
     api: {
         bodyParser: false,
     },
 };
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
@@ -19,7 +24,7 @@ export default async function handler(req, res) {
     console.log('API Key length:', process.env.OPENAI_API_KEY?.length);
 
     try {
-        const { IncomingForm } = await import('formidable');
+        const { IncomingForm } = formidable;
 
         const form = new IncomingForm({
             maxFileSize: 25 * 1024 * 1024, // Increased for high-res images
@@ -151,7 +156,7 @@ async function runAdvancedAuditPipeline({ billFile, eobFile, insuranceInfo }) {
 
 // ADVANCED OCR PROCESSING WITH MULTI-ENGINE APPROACH
 async function performAdvancedOCR(file, docType) {
-    const fs = await import('fs');
+    // fs already imported at top
     console.log(`Starting advanced OCR for ${docType}: ${file.originalFilename}`);
 
     try {
@@ -160,12 +165,12 @@ async function performAdvancedOCR(file, docType) {
 
         if (file.mimetype === 'application/pdf') {
             // PDF processing pipeline - optimized for serverless
-            const pdfBuffer = fs.readFileSync(file.filepath);
+            const pdfBuffer = await fs.readFile(file.filepath);
             console.log(`PDF file read: ${pdfBuffer.length} bytes`);
 
             // Try PDF text extraction first (faster and works great in serverless)
             try {
-                const pdfParse = await import('pdf-parse');
+                // pdfParse already imported at top
                 const pdfData = await pdfParse.default(pdfBuffer);
                 extractedText = pdfData.text;
                 console.log(`PDF text extracted: ${extractedText.length} characters`);
@@ -181,7 +186,7 @@ async function performAdvancedOCR(file, docType) {
             }
         } else {
             // Image processing pipeline - serverless compatible
-            const imageBuffer = fs.readFileSync(file.filepath);
+            const imageBuffer = await fs.readFile(file.filepath);
             console.log(`Image file read: ${imageBuffer.length} bytes, mimetype: ${file.mimetype}`);
 
             // Light preprocessing with JIMP (serverless compatible)
@@ -212,16 +217,16 @@ async function performAdvancedOCR(file, docType) {
 // SERVERLESS-COMPATIBLE IMAGE PREPROCESSING
 async function preprocessImage(imageBuffer) {
     try {
-        const Jimp = await import('jimp');
+        // Jimp already imported at top
 
-        const image = await Jimp.default.read(imageBuffer);
+        const image = await Jimp.read(imageBuffer);
 
         const processedImage = await image
-            .resize(1200, Jimp.default.AUTO)
+            .resize(1200, Jimp.AUTO)
             .quality(95)
             .contrast(0.2)
             .normalize()
-            .getBufferAsync(Jimp.default.MIME_PNG);
+            .getBufferAsync(Jimp.MIME_PNG);
 
         console.log('Image preprocessed with JIMP');
         return processedImage;
@@ -246,7 +251,7 @@ async function performGPTStructureExtraction(rawText, docType, file) {
 
     if (isImage) {
         // For images, use vision + text analysis
-        const fs = await import('fs');
+        // fs already imported at top
         const imageBuffer = fs.readFileSync(file.filepath);
         const base64 = imageBuffer.toString('base64');
 
