@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+</head>
+<body>
+    <h1>Test API Directly</h1>
+    <input type="file" id="bill" />
+    <input type="file" id="eob" />
+    <button onclick="testAPI()">Test API</button>
+    <pre id="result"></pre>
+
+    <script>
+    async function testAPI() {
+        const billFile = document.getElementById('bill').files[0];
+        const eobFile = document.getElementById('eob').files[0];
+
+        if (!billFile || !eobFile) {
+            alert('Please select both files');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('bill', billFile);
+        formData.append('eob', eobFile);
+        formData.append('insuranceInfo', JSON.stringify({carrier: 'Test'}));
+
+        try {
+            const response = await fetch('/api/analyze', {
+                method: 'POST',
+                body: formData
+            });
+
+            const text = await response.text();
+            document.getElementById('result').textContent =
+                `Status: ${response.status}\nResponse: ${text}`;
+        } catch (error) {
+            document.getElementById('result').textContent =
+                `Error: ${error.message}`;
+        }
+    }
+    </script>
+</body>
+</html>
