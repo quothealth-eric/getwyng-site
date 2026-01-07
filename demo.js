@@ -555,7 +555,12 @@ class WyngAuditDemo {
             });
 
             if (!response.ok) {
-                throw new Error('Analysis failed');
+                const errorText = await response.text();
+                console.error('API Error Response:', errorText);
+                const error = new Error(`Analysis failed: ${response.status} ${response.statusText}`);
+                error.response = response;
+                error.responseText = errorText;
+                throw error;
             }
 
             const results = await response.json();
@@ -582,15 +587,10 @@ class WyngAuditDemo {
         } catch (error) {
             console.error('Analysis error:', error);
 
-            // Try to get more details from the response
+            // Get detailed error information
             let errorDetails = error.message;
-            if (error.response) {
-                try {
-                    const errorText = await error.response.text();
-                    errorDetails += `\nAPI Response: ${errorText}`;
-                } catch (e) {
-                    errorDetails += `\nResponse Status: ${error.response.status} ${error.response.statusText}`;
-                }
+            if (error.responseText) {
+                errorDetails += `\nAPI Response: ${error.responseText}`;
             }
 
             // Show detailed error instead of mock data
@@ -607,11 +607,12 @@ class WyngAuditDemo {
                     detections: [{
                         ruleKey: 'DEBUG INFO',
                         severity: 'high',
-                        explanation: `Full error details: ${errorDetails}`,
+                        explanation: `Full error details:\n${errorDetails}`,
                         actions: [
-                            'Check Vercel function logs',
-                            'Verify OpenAI API key is set',
-                            'Check uploaded file format and size'
+                            'Check browser console for detailed error logs',
+                            'Verify OpenAI API key is set in Vercel environment',
+                            'Check uploaded file format and size',
+                            'Ensure both files are valid PDFs or images'
                         ],
                         savings_cents: 0,
                         evidence: { lineIds: [] },
