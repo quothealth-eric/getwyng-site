@@ -515,6 +515,18 @@ class WyngAuditDemo {
         });
     }
 
+    fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const base64 = reader.result.split(',')[1];
+                resolve(base64);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+
     async runAnalysis() {
         this.setState({ step: 3, processing: true });
 
@@ -544,14 +556,22 @@ class WyngAuditDemo {
         }
 
         try {
-            const formData = new FormData();
-            formData.append('bill', this.state.billFile);
-            formData.append('eob', this.state.eobFile);
-            formData.append('insuranceInfo', JSON.stringify(this.state.insuranceInfo));
+            // Convert files to base64 to bypass WAF
+            const billBase64 = await this.fileToBase64(this.state.billFile);
+            const eobBase64 = await this.fileToBase64(this.state.eobFile);
 
-            const response = await fetch('/api/analyze', {
+            const response = await fetch('/api/analyze-base64', {
                 method: 'POST',
-                body: formData
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    billBase64,
+                    eobBase64,
+                    billType: this.state.billFile.type,
+                    eobType: this.state.eobFile.type,
+                    insuranceInfo: this.state.insuranceInfo
+                })
             });
 
             if (!response.ok) {
